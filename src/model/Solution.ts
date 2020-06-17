@@ -1,9 +1,9 @@
 export default class Solution {
     constructor(
-        id: number,
-        title: string,
-        content: string,
-        likes: number,
-        dislikes: number
+        public id: number,
+        public title: string,
+        public content: string,
+        public likes: number,
+        public dislikes: number
     ) {}
 }
