@@ -6,7 +6,7 @@ import AppBar from "../general/AppBar";
 import {Button, CardContent, Container, Fab, Grid, IconButton, Switch, Typography as T} from "@material-ui/core";
 import Card from "../general/Card";
 import Solution from "../model/Solution";
-import Divider from "../general/Divier";
+import Divider from "../general/Divider";
 
 function TaskDetails() {
 

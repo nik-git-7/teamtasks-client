@@ -1,27 +1,20 @@
 import React from 'react';
 import AppBar from "../general/AppBar";
 import {
-    Button,
-    CardContent,
     Container,
-    Grid,
-    IconButton,
-    Switch,
-    Typography as T,
     List,
     ListItem, ListItemText
 } from "@material-ui/core";
-import Card from "../general/Card";
-import Divider from "../general/Divier";
-import {ThumbDown, ThumbUp} from "@material-ui/icons";
-import {Add} from "@material-ui/icons";
+import Divider from "../general/Divider";
+import {Add, Group} from "@material-ui/icons";
 
 import AppBarMenuItem from "../general/AppBarMenuItem";
 import Project from "../model/Project";
 
 function ProjectsView() {
     const menu = [
-        new AppBarMenuItem(<Add/>, 'Erstellen', () => {}, 'right')
+        new AppBarMenuItem(<Group />, 'Icon', null, 'left'),
+        new AppBarMenuItem(<Add />, 'Erstellen', () => {}, 'right')
     ];
 
     const projects = [
@@ -35,7 +28,7 @@ function ProjectsView() {
 
     return (
         <>
-            <AppBar title={"Projekte"} menu={menu} titleClick={() => {}}/>
+            <AppBar title={"Team Tasks"} menu={menu} titleClick={null}/>
             <Container>
                 <List>
                     {projects.map((project) => (

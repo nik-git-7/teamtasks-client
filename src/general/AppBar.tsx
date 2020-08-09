@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {
     AppBar as MuiAppBar,
-    Box, Button, ButtonBase, CardActionArea,
+    Box, Button, ButtonBase, CardActionArea, Container, Grid,
     IconButton,
     Menu,
     MenuItem, Paper,
@@ -12,6 +12,8 @@ import {
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AppBarMenuItem from "./AppBarMenuItem";
 import App from "../App";
+import MutedIconButton from "./MutedIconButton";
+import MutedButtonBase from "./MutedButtonBase";
 
 const Title = withStyles({
     root: {
@@ -26,14 +28,15 @@ const Title = withStyles({
 
 const Content = withStyles({
     root: {
-        display: 'flex'
+        display: 'flex',
+        // alignItems: 'center'
     }
-})(Toolbar);
+})(Container);
 
 const styles = (theme: any) => ({
     title: {
         flexGrow: 1,
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
 
         /*'&:hover': {
             backgroundColor: theme.palette.primary.main
@@ -43,7 +46,7 @@ const styles = (theme: any) => ({
 
 interface Props {
     title: string;
-    titleClick: () => void;
+    titleClick: (() => void) | null;
     menu: AppBarMenuItem[];
     classes: any;
 }
@@ -81,30 +84,60 @@ function AppBar({title, titleClick, menu, classes}: Props) {
             <MuiAppBar>
                 <Content>
                     {left.map((item, index) => (
-                        <IconButton
-                            key={index}
-                            edge={"start"}
-                            color={"inherit"}
-                            aria-label={item.label}
-                            onClick={item.onClick}
-                        >
-                            {item.view}
-                        </IconButton>
+                        item.onClick == null
+                            ? (
+                                <MutedIconButton
+                                    key={index}
+                                    edge={"start"}
+                                    color={"inherit"}
+                                >
+                                    {item.view}
+                                </MutedIconButton>)
+                            : (
+                                <IconButton
+                                    key={index}
+                                    edge={"start"}
+                                    color={"inherit"}
+                                    aria-label={item.label}
+                                    onClick={item.onClick!}
+                                >
+                                    {item.view}
+                                </IconButton>)
                     ))}
-                    <ButtonBase className={classes.title} onClick={titleClick}>
-                        <T variant={"h6"}>{title}</T>
-                    </ButtonBase>
+                    {
+                        titleClick == null
+                            ? (
+                                <MutedButtonBase className={classes.title}>
+                                    <T variant={"h6"}>{title}</T>
+                                </MutedButtonBase>
+                            )
+                            : (
+                                <ButtonBase className={classes.title} onClick={titleClick!}>
+                                    <T variant={"h6"}>{title}</T>
+                                </ButtonBase>
+                            )
+                    }
 
                     {right.map((item, index) => (
-                        <IconButton
-                            key={index}
-                            edge={"end"}
-                            color={"inherit"}
-                            aria-label={item.label}
-                            onClick={item.onClick}
-                        >
-                            {item.view}
-                        </IconButton>
+                        item.onClick == null
+                            ? (
+                                <MutedIconButton
+                                    key={index}
+                                    edge={"end"}
+                                    color={"inherit"}
+                                >
+                                    {item.view}
+                                </MutedIconButton>)
+                            : (
+                                <IconButton
+                                    key={index}
+                                    edge={"end"}
+                                    color={"inherit"}
+                                    aria-label={item.label}
+                                    onClick={item.onClick!}
+                                >
+                                    {item.view}
+                                </IconButton>)
                     ))}
                     {hidden.length ? (
                         <IconButton
@@ -113,12 +146,12 @@ function AppBar({title, titleClick, menu, classes}: Props) {
                             aria-label={"More"}
                             onClick={handleMenuOpen}
                         >
-                            <MoreVertIcon />
+                            <MoreVertIcon/>
                         </IconButton>
                     ) : ''}
                 </Content>
             </MuiAppBar>
-            <Toolbar />
+            <Toolbar/>
             <Menu
                 id={"navigation-menu"}
                 anchorEl={anchorEl}
@@ -130,9 +163,10 @@ function AppBar({title, titleClick, menu, classes}: Props) {
                 {hidden.map((item, index) => (
                     <MenuItem
                         key={index}
+                        disabled={item.onClick == null}
                         onClick={() => {
                             handleMenuClose();
-                            item.onClick();
+                            item.onClick!();
                         }}
                     >
                         {item.view}&nbsp;
